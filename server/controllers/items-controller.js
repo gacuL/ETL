@@ -10,12 +10,17 @@ let itemsController = function(router, id){
                     //26675447
                  itemsRepository.fetchPageData(52408449, 1)
                      .then(function(result){
+                         if(result){
+                             console.log('xxxxxx',result);
+                         } else {
+                             console.log('brak resu;t');
+                         }
 
                          // let newItem = new Item({
                          //     name: result.name,
                          // });
 
-                       console.log(result.opinions[7]);
+                       // console.log(result.opinions);
 
 
                          // itemsRepository.addItem(newItem, (err, item)=>{
@@ -27,11 +32,6 @@ let itemsController = function(router, id){
                          // });
                          // console.log('this is process id', id);
                          // console.log(result.opinions[0][0].textContent);
-                         if(!result){
-                             res.json('hello world', id);
-                         } else {
-                            res.json('finished');
-                         }
 
                      })
 
