@@ -1,10 +1,13 @@
+'use strict';
+
 const jsdom = require('jsdom');
 let {JSDOM} = jsdom;
 const url = "https://ceneo.pl/";
 
+
 module.exports.fetchPageData = (deviceId, pageId) => {
+
     return new Promise((resolve, reject) => {
-        console.log(fetchPageDOM);
         resolve(fetchPageDOM(deviceId, pageId));
     })
 
@@ -20,7 +23,6 @@ function fetchPageDOM(deviceId, pageId, opinions = []) {
             .then(result => nextPageExist(result))
             .then(result => fetchPageDOM(result.deviceId, result.pageId + 1, result.opinions))
             .catch((result) => prepareItemData(result.dom, result.opinions))
-
     })
 }
 
@@ -40,7 +42,6 @@ function nextPageExist(result) {
 
 function concatOpinions(result) {
     return new Promise((resolve) => {
-
         result.opinions = result.opinions.concat(result.localOpinions);
         resolve({opinions: result.opinions, dom: result.dom, deviceId: result.deviceId, pageId: result.pageId});
     })
@@ -54,8 +55,7 @@ function prepareItemData(domObject, opinions) {
             model: getModel(domObject),
             opinions: opinions
         });
-    });
-
+    })
 }
 
 function getModel(domObject) {

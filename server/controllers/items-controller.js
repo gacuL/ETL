@@ -1,75 +1,37 @@
 const itemsRepository = require('../repositories/items-repository');
-const Item  = require('../models/item-model');
+const processRepository = require('../repositories/process-repository');
+//const {fork} = require('child_process');
 
-let itemsController = function(router, id){
-        router
-            .route('/phones/:id')
-            .get((req, res) =>{
-            //res.send('test');
+let itemsController = function (router, io) {
+    router
+        .route('/phones/:id')
+        .get((req, res) => {
+//CALLBACK HELL REFACTOR PLZ
+            processRepository.createProcess(555252)
+                .then((result) => {
+                    processRepository.checkProcessStatus(result, (err, data) => {
+                        if (data) {
 
-                    //26675447
-                 itemsRepository.fetchPageData(52408449, 1)
-                     .then(function(result){
-                         if(result){
-                             console.log('xxxxxx',result);
-                         } else {
-                             console.log('brak resu;t');
-                         }
+                            console.log('This process has already been created');
+                            res.json('This process already exist');
+                        } else {
+                            processRepository.addProcess(result, (err, data) => {
 
-                         // let newItem = new Item({
-                         //     name: result.name,
-                         // });
+                                res.json('Process has been created');
+                                itemsRepository.fetchPageData(52408449, 1)
+                                    .then((d) => {
+                                        processRepository.updateProcess(data, (err, data) => {
+                                            console.log(data);
 
-                       // console.log(result.opinions);
+                                        });
+                                        io.emit('result', d);
+                                    });
+                            });
 
-
-                         // itemsRepository.addItem(newItem, (err, item)=>{
-                         //    if(err){
-                         //        console.log(err);
-                         //    } else {
-                         //        console.log(item);
-                         //    }
-                         // });
-                         // console.log('this is process id', id);
-                         // console.log(result.opinions[0][0].textContent);
-
-                     })
-
-
-
-               // res.send('witam');
-               // for(let i = 0; i < 500000; i++){
-               //     console.log('waiting...' + i);
-               //  }
-                // function getAllPages(deviceId, pageId){
-                //     JSDOM.fromURL("https://ceneo.pl/" + deviceId + "/opinie-" + pageId).then(dom => {
-                //         console.log(pageId);
-                //         //"product-review-body"
-                //         // console.log(dom.window.document.querySelector("p").textContent);
-                //         let domObject = new JSDOM(dom.serialize());
-                //         let firstComments = domObject.window.document.getElementsByClassName("product-review-body");
-                //         console.log(firstComments[0].textContent);
-                //         let pagination = domObject.window.document.getElementsByClassName("pagination");
-                //         // for(let i = 0; i < 10; i ++){
-                //         //     if(yy[0].lastElementChild.getElementsByClassName("page-arrow arrow-next")[0].className){
-                //         //         console.log('yeah');
-                //         //     } else {
-                //         //         console.log('no');
-                //         //     }
-                //         // }
-                //         //console.log(pagination[0].lastElementChild.getElementsByClassName("page-arrow arrow-next")[0].className);
-                //         if(pagination[0].lastElementChild.getElementsByClassName("page-arrow arrow-next")[0].className){
-                //            getAllPages(deviceId, pageId+1);
-                //         } else {
-                //             return 'nice';
-                //         }
-                //         // arr.push(yy[0].lastElementChild.textContent);
-                //         // console.log(arr);
-                //     });
-                // }
-                //
-                // getAllPages(36505455, 1);
-            });
+                        }
+                    });
+                });
+        });
 };
 
 module.exports = itemsController;

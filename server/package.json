@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "nodemon cluster.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,7 +14,9 @@
     "express": "^4.16.2",
     "jsdom": "^11.3.0",
     "lodash": "^4.17.4",
-    "mongoose": "^4.12.6"
+    "mongoose": "^4.12.6",
+    "q": "^1.5.1",
+    "socket.io": "^2.0.4"
   },
   "devDependencies": {
     "nodemon": "^1.12.1"
