@@ -1,5 +1,6 @@
 const itemsRepository = require('../repositories/items-repository');
 const processRepository = require('../repositories/process-repository');
+const fs = require('fs');
 //const {fork} = require('child_process');
 
 let itemsController = function (router, io) {
@@ -7,30 +8,32 @@ let itemsController = function (router, io) {
         .route('/phones/:id')
         .get((req, res) => {
 //CALLBACK HELL REFACTOR PLZ
-            processRepository.createProcess(555252)
-                .then((result) => {
-                    processRepository.checkProcessStatus(result, (err, data) => {
-                        if (data) {
+            let itemId = req.params.id;
+            processRepository.checkIfProcessExist(itemId, (err, data) => {
+                if (data) {
+                    res.status(200).json('This process already exist');
+                } else {
+                    processRepository.createProcess(itemId)
+                        .then((createdProcess) => {
+                            processRepository.addProcess(createdProcess, (err, data) => {
+                                res.json('Process has just now been created');
+                                itemsRepository.fetchPageData(data.processId, 1)
+                                    .then((fetchedData) => {
+                                        processRepository.updateProcess(data, (err, result) => {
+                                            if (err) throw err;
+                                            if (result) {
+                                                processRepository.saveProcessDataToFile(fetchedData, data.processId);
+                                                processRepository.getFinishedProcess(data.processId, (err, finishedProcess) => {
+                                                    io.emit('result', finishedProcess);
+                                                });
 
-                            console.log('This process has already been created');
-                            res.json('This process already exist');
-                        } else {
-                            processRepository.addProcess(result, (err, data) => {
-
-                                res.json('Process has been created');
-                                itemsRepository.fetchPageData(52408449, 1)
-                                    .then((d) => {
-                                        processRepository.updateProcess(data, (err, data) => {
-                                            console.log(data);
-
+                                            }
                                         });
-                                        io.emit('result', d);
                                     });
                             });
-
-                        }
-                    });
-                });
+                        });
+                }
+            });
         });
 };
 

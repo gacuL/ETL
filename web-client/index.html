@@ -13,7 +13,7 @@
     socket.on('connect', function() {
         socket.on('result', function(result){
             res = result;
-            console.log('check 2 is resolved', socket.connected);
+            console.log('check 2 is resolved', result);
         });
 //        console.log('check 2 is resolved', socket.connected);
     });

@@ -28,14 +28,15 @@ function fetchPageDOM(deviceId, pageId, opinions = []) {
 
 function nextPageExist(result) {
     return new Promise((resolve, reject) => {
+
         let pagePaginationElement = result.dom.window.document.getElementsByClassName("pagination");
-        let nextPageExist = pagePaginationElement[0].lastElementChild.getElementsByClassName("page-arrow arrow-next")[0];
-        if (nextPageExist) {
-            resolve({nextPageExist: nextPageExist, dom: result.dom,
-                opinions: result.opinions, deviceId: result.deviceId, pageId: result.pageId});
-        } else {
-            reject({dom: result.dom, opinions: result.opinions});
-        }
+            let nextPageExist = pagePaginationElement[0].lastElementChild.getElementsByClassName("page-arrow arrow-next")[0];
+            if (nextPageExist) {
+                resolve({nextPageExist: nextPageExist, dom: result.dom,
+                    opinions: result.opinions, deviceId: result.deviceId, pageId: result.pageId});
+            } else {
+                reject({dom: result.dom, opinions: result.opinions});
+            }
     })
 }
 

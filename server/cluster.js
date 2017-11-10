@@ -18,7 +18,6 @@ if (cluster.isMaster) {
         console.log('Starting a new worker');
         cluster.fork();
     });
-    g
 } else {
     require('./server');
 }
