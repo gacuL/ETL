@@ -1,40 +1,41 @@
 const itemsRepository = require('../repositories/items-repository');
-const processRepository = require('../repositories/process-repository');
-const fs = require('fs');
+const tasksRepository = require('../repositories/task-repository');
 //const {fork} = require('child_process');
 
 let itemsController = function (router, io) {
     router
-        .route('/phones/:id')
+        .route('/items/:id')
         .get((req, res) => {
 //CALLBACK HELL REFACTOR PLZ
             let itemId = req.params.id;
-            processRepository.checkIfProcessExist(itemId, (err, data) => {
-                if (data) {
-                    res.status(200).json('This process already exist');
-                } else {
-                    processRepository.createProcess(itemId)
-                        .then((createdProcess) => {
-                            processRepository.addProcess(createdProcess, (err, data) => {
-                                res.json('Process has just now been created');
-                                itemsRepository.fetchPageData(data.processId, 1)
-                                    .then((fetchedData) => {
-                                        processRepository.updateProcess(data, (err, result) => {
-                                            if (err) throw err;
-                                            if (result) {
-                                                processRepository.saveProcessDataToFile(fetchedData, data.processId);
-                                                processRepository.getFinishedProcess(data.processId, (err, finishedProcess) => {
-                                                    io.emit('result', finishedProcess);
-                                                });
+            // res.status(200).json('This process already exist');
+            tasksRepository.checkIfTaskExist(itemId)
+                .then((result) => tasksRepository.createTask(itemId))
+                .then(createdTask => tasksRepository.saveTask(createdTask))
+                .then((savedTask) => {
+                    console.log(savedTask);
+                    res.json('Process has just now been created');
+                    itemsRepository.fetchPageData(savedTask.processId, 1)
+                        .then((fetchedData) => tasksRepository.saveFetchedDataToFile(fetchedData, savedTask.processId))
+                        .then((savedData) => tasksRepository.updateTaskStatus(savedTask))
+                        .then((updatedTaskStatus) => tasksRepository.getFinishedTask(savedTask.processId))
+                        .then((finishedTask) => {
+                            console.log('task has finished');
+                            io.emit('result', finishedTask);
+                        })
+                })
+                .catch((err) => {
+                    console.log('err', err);
+                })
+        });
 
-                                            }
-                                        });
-                                    });
-                            });
-                        });
-                }
-            });
+    router
+        .route('/items/')
+        .get((req, res) => {
+            tasksRepository.getAllFinishedTasks()
+                .then((result) =>{
+                res.json(result);
+            })
         });
 };
-
 module.exports = itemsController;

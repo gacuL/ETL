@@ -9,6 +9,8 @@ const config = require('./config/database');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
+mongoose.Promise = global.Promise;
+
 app.use('/', express.static(path.join(__dirname, '../web-client')));
 
 
