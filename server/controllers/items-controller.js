@@ -6,7 +6,6 @@ let itemsController = function (router, io) {
     router
         .route('/items/:id')
         .get((req, res) => {
-//CALLBACK HELL REFACTOR PLZ
             let itemId = req.params.id;
             // res.status(200).json('This process already exist');
             tasksRepository.checkIfTaskExist(itemId)
@@ -25,6 +24,7 @@ let itemsController = function (router, io) {
                         })
                 })
                 .catch((err) => {
+                    res.json(err);
                     console.log('err', err);
                 })
         });
@@ -33,9 +33,9 @@ let itemsController = function (router, io) {
         .route('/items/')
         .get((req, res) => {
             tasksRepository.getAllFinishedTasks()
-                .then((result) =>{
-                res.json(result);
-            })
+                .then((result) => {
+                    res.json(result);
+                })
         });
 };
 module.exports = itemsController;
