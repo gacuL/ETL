@@ -2,6 +2,7 @@ let itemsController = require('./controllers/items-controller');
 
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 const app = express();
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -13,6 +14,13 @@ mongoose.Promise = global.Promise;
 
 app.use('/', express.static(path.join(__dirname, '../web-client')));
 
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
+app.use(cors());
 
 mongoose.connect(config.database, {useMongoClient: true});
 
