@@ -9,12 +9,12 @@ export default [
   children: [
   {
     path:'single-step',
-    name: 'single-step',
+    name: 'singleStep',
     component: ETLSingleStep
   },
     {
       path:'three-steps',
-      name: 'three-steps',
+      name: 'threeSteps',
       component: ETLThreeSteps
     }]
   }

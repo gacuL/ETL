@@ -6,7 +6,7 @@ let opinionSchema = new mongoose.Schema({
     content: String,
     stars: Number,
     author: String,
-    Date: Date
+    date: Date
 });
 
 module.exports = mongoose.model("Opinion", opinionSchema);

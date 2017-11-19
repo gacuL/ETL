@@ -11,7 +11,7 @@
             <a class="nav-link"><router-link to="/">Home</router-link><span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><router-link to="/etl/single-step">ETL</router-link></a>
+            <a class="nav-link" href="#"><router-link to="/etl">ETL</router-link></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">fetch and show data</a>

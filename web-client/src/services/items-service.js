@@ -1,7 +1,7 @@
 import Api from './api';
 
 export default {
-  get(){
-    return Api().get('/items');
+  get(id){
+    return Api().get('/items/' + id);
   }
 }

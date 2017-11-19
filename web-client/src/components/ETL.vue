@@ -1,23 +1,15 @@
 <template>
   <div class="container margin_top">
-    <nav class="nav nav-tabs" id="myTab" role="tablist">
-      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" role="tab" aria-controls="nav-home"
-         aria-selected="true">
-        <router-link
-          :to="{name: 'single-step'}">ETL - single step process
-        </router-link>
-      </a>
-      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" role="tab" aria-controls="nav-profile"
-         aria-selected="false">
-        <router-link
-          :to="{name: 'three-steps'}">ETL - three steps process
-        </router-link>
-      </a>
-    </nav>
-    <div class="tab-content" id="nav-tabContent">
-      <router-view></router-view>
-    </div>
-
+    <ul class="nav nav-pills">
+      <router-link class="nav-link" :to="{name:'singleStep'}" tab="li" active-class="active" exact>
+      <a>ETL - single step</a>
+    </router-link>
+      <router-link class="nav-link" :to="{name:'threeSteps'}" tab="li" active-class="active" exact>
+        <a>ETL - three steps</a>
+      </router-link>
+    </ul>
+    <hr>
+    <router-view></router-view>
   </div>
 </template>
 

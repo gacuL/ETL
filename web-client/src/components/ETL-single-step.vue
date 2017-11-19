@@ -1,4 +1,5 @@
 <template>
+  <div class="row">
   <div class="col-md-6 col-margin-top">
     <div class="card">
       <div class="card-header">single step</div>
@@ -17,9 +18,18 @@
       </form>
     </div>
     </div>
-
   </div>
-
+  <div class="col-md-6 col-margin-top">
+    <div class="card">
+      <div class="card-header">
+        Results
+      </div>
+      <div class="card-body">
+        {{result}}
+      </div>
+    </div>
+  </div>
+  </div>
 </template>
 
 <script>
@@ -28,14 +38,17 @@
 
     data () {
       return {
-        productId: ''
+        productId: '',
+        result: ''
       }
     },
     methods: {
-      fetchData() {
-        itemsService.get()
+      fetchData(event) {
+        event.preventDefault();
+        itemsService.get(this.productId)
           .then((result)=>{
-            console.log(result);
+          console.log(result);
+            this.result = result.data;
           })
       }
     }
