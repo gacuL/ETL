@@ -28,11 +28,11 @@ function fetchPageDOM(deviceId, pageId, opinions = []) {
 
 function nextPageExist(result) {
     return new Promise((resolve, reject) => {
-
+        console.log('maly test');
         let pagePaginationElement = result.dom.window.document.getElementsByClassName("pagination");
-             let nextPageExist = pagePaginationElement[0].lastElementChild.getElementsByClassName("page-arrow arrow-next");
+        //
         console.log('nextpageexist');
-            if ( pagePaginationElement.length > 0 && nextPageExist.length > 0) {
+            if ( pagePaginationElement.length > 0 && pagePaginationElement[0].lastElementChild.getElementsByClassName("page-arrow arrow-next").length > 0) {
                 console.log('next page exist');
                 resolve({nextPageExist: nextPageExist, dom: result.dom,
                     opinions: result.opinions, deviceId: result.deviceId, pageId: result.pageId});
@@ -56,12 +56,12 @@ function concatOpinions(result) {
 function prepareItemData(result) {
     console.log('aaaa', result.opinions);
     return new Promise((resolve, reject) => {
-        // resolve({
-        //     type: getType(domObject),
-        //     brand: getBrand(domObject),
-        //     model: getModel(domObject),
-        //     opinions: opinions
-        // });
+        resolve({
+            type: getType(result.dom),
+            brand: getBrand(result.dom),
+            model: getModel(result.dom),
+            opinions: result.opinions
+        });
     })
 }
 
@@ -89,42 +89,26 @@ function getBrand(domObject) {
 function prepareOpinionsData(dom, opinions, deviceId, pageId) {
     return new Promise((resolve, reject) => {
         let localOpinions = [];
-        let allOpinions = dom.window.document.getElementsByClassName("product-review-body");
+        let productsReviews = dom.window.document.querySelector(".product-reviews").getElementsByClassName("review-box");
+        console.log(productsReviews);
+        Array.prototype.map.call(productsReviews, (productReview)=>{
+            console.log('//////test/////)');
+            let reviewContent = productReview.getElementsByClassName("product-review-body")[0].textContent;
+            let stars = productReview.getElementsByClassName("review-score-count")[0].textContent;
+            let reviewerName = productReview.getElementsByClassName("reviewer-name-line")[0].textContent;
+            let reviewDate = productReview.getElementsByTagName("time")[0].getAttribute("datetime");
+            let formattedReviewerName = reviewerName.replace(/[\n\t\s]+/g, "");
+            let formattedReviewContent  = reviewContent.replace(/[\n\t]+/g, "");
+            return localOpinions.push({reviewContent: formattedReviewContent, stars: stars, reviewerName: formattedReviewerName, reviewDate: reviewDate});
+            // let pros = productsReviews.getElementsByClassName("pros-cell")[0].querySelectorAll('ul')[0];
+            // Array.prototype.map.call(pros, (singlePros)=>{
+            //    console.log(singlePros.querySelectorAll("li"))
+            // });
 
-        Array.prototype.map.call(allOpinions, (opinion) => {
-            let changedText = opinion.textContent.replace(/\s\s+/g, ' ');
-            return localOpinions.push(changedText);
         });
-        console.log('opinions data');
         resolve({opinions, localOpinions, dom, deviceId, pageId});
     });
-    // return new Promise((resolve, reject) => {
-    //     let localOpinions = [];
-    //     let opinions1 = [];
-    //     let allOpinions = dom.window.document.getElementsByClassName("product-review-body");
-    //     let stars = dom.window.document.getElementsByClassName("review-score-count");
-    //         let localOpinion = {};
-    //     for(let i = 0; i < allOpinions.length;i +=1){
-    //
-    //         let opinionContent = allOpinions[i].textContent;
-    //         let opinionStars = stars[i].innerHTML;
-    //         localOpinion = {
-    //             content: opinionContent,
-    //             stars: opinionStars
-    //         };
-    //         opinions1.push(localOpinion);
-    //         // console.log('wow', stars[i].textContent);
-    //     }
-    //     // console.log('hahafaf',opinions1[0]);
-    //
-    //     // Array.prototype.map.call(allOpinions, (opinion) => {
-    //     //
-    //     //     let changedText = opinion.textContent.replace(/\s\s+/g, ' ');
-    //     //     return localOpinions.push(changedText);
-    //     // });
-    //     resolve({opinions, opinions1, dom, deviceId, pageId});
-    //
-    // });
+
 }
 
 module.exports.addItem = (item, callback) => {
