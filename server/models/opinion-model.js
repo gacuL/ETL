@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-let opinionSchema = new mongoose.Schema({
+let opinionSchema = new Schema({
     pros: String,
     cons: String,
-    content: String,
-    stars: Number,
-    author: String,
-    date: Date
+    reviewContent: String,
+    stars: String,
+    reviewerName: String,
+    reviewDate: Date
 });
 
-module.exports = mongoose.model("Opinion", opinionSchema);
+module.exports = opinionSchema;
+

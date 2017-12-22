@@ -5,8 +5,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import VueResource from 'vue-resource'
 import VueRouter from 'vue-router';
 import Routes from './routes/routes';
+import VueSocketio from 'vue-socket.io';
 
-
+Vue.use(VueSocketio, 'http://localhost:8000');
 Vue.use(BootstrapVue);
 Vue.use(VueResource);
 Vue.use(VueRouter);
@@ -14,9 +15,6 @@ Vue.use(VueRouter);
 const router = new VueRouter({
   routes: Routes,
 });
-
-
-
 
 new Vue({
   el: '#app',

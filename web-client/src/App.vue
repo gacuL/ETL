@@ -41,6 +41,11 @@ export default {
 
 <style>
   body {
-    background-color: #ccc;
+    background-color: #f5f5f5;
   }
+
+  .btn {
+    border-radius: 0;
+  }
+
 </style>

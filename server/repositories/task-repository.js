@@ -19,10 +19,10 @@ module.exports.saveTask = (task) => {
     });
 };
 
-module.exports.updateTaskStatus = (task) => {
+module.exports.updateTaskStatus = (task, savedToDB = false) => {
     return new Promise((resolve, reject) => {
         const query = {processId: task.processId};
-        let newValue = {pending: false};
+        let newValue = {pending: false, savedToDb: savedToDB};
         Task.updateOne(query, newValue, (err) => {
             if (err) {
                 reject(err);
@@ -42,6 +42,21 @@ module.exports.createTask = (processId) => {
             savedToDb: false
         }));
     });
+};
+
+module.exports.updateTaskDate = (id) => {
+    return new Promise((resolve, reject) => {
+        const query = {processId: id};
+        let newValue = {date: new Date()};
+        Task.updateOne(query, newValue, (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                console.log('aaaaa', newValue);
+                resolve(newValue);
+            }
+        })
+    })
 };
 
 module.exports.saveFetchedDataToFile = (data, processId) => {
@@ -95,4 +110,18 @@ module.exports.getAllFinishedTasks = () => {
             }
         });
     })
+};
+
+module.exports.getTaskById = (id) => {
+    return new Promise((resolve, reject) => {
+        const query = {processId: id, savedToDb: true};
+        Task.findOne(query)
+            .then((result) => {
+                if (result) {
+                    reject({errorInfo: "This item is already in database", result});
+                } else {
+                    resolve(result);
+                }
+            })
+    });
 };

@@ -2,12 +2,14 @@
   <div class="container margin_top">
     <ul class="nav nav-pills">
       <router-link class="nav-link" :to="{name:'singleStep'}" tab="li" active-class="active" exact>
-      <a>ETL - single step</a>
+      <a>ETL - cały proces</a>
     </router-link>
       <router-link class="nav-link" :to="{name:'threeSteps'}" tab="li" active-class="active" exact>
-        <a>ETL - three steps</a>
+        <a>ETL - 3 kroki</a>
       </router-link>
+      <button class="btn btn-primary float-right">Fetch</button>
     </ul>
+
     <hr>
     <router-view></router-view>
   </div>
