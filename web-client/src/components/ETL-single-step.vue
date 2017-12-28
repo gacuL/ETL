@@ -30,7 +30,7 @@
         </div>
         <div v-else="!loading">
           <div v-if="socketData.errorInfo" class="card-body">
-            <p>Id produktu: {{socketData.result.processId}}</p>
+            <p>Id produktu: {{socketData.result.id}}</p>
             <p>Data dodania produktu: {{socketData.result.date}}</p>
             <p>Status: {{socketData.errorInfo}}</p>
             <button @click="updateData" class="btn btn-primary">Kliknij aby odświeżyć dane</button>

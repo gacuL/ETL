@@ -1,5 +1,8 @@
-let itemsController = require('./controllers/items-controller');
 let entireProcess = require('./controllers/entire-ETL-process-controller');
+let extractController = require('./controllers/extract-controller');
+let transformController = require('./controllers/transform-controller');
+let loadController = require('./controllers/load-controller');
+
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
@@ -30,8 +33,10 @@ mongoose.connection.on('connected', () => {
 });
 
 app.use('/api', router);
-itemsController(router, io);
 entireProcess(router, io);
+extractController(router, io);
+transformController(router, io);
+loadController(router, io);
 
 http.listen(8000, function () {
     console.log('Process ' + process.pid + ' is listening to all incoming requests');

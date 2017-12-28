@@ -15,7 +15,8 @@ function getReviews(reviews) {
     return reviewsArray;
 }
 
-module.exports.addItem = (itemData) => {
+module.exports.saveItemToDb = (itemData) => {
+    // itemData = JSON.parse(itemData);
     return new Promise((resolve, reject) => {
         let newItem = new Item({
             type: itemData.type,
@@ -58,7 +59,7 @@ module.exports.getItemById = (item) => {
     console.log(item);
     return new Promise((resolve, reject) => {
         const query = {
-            id: item.processId
+            id: item.id
         };
 
         Item.findOne(query)

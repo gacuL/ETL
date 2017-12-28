@@ -12,12 +12,11 @@ let entireProcess = function (router, io) {
                 .then((result) => tasksRepository.createTask(itemId))
                 .then(createdTask => tasksRepository.saveTask(createdTask))
                 .then((savedTask) => {
-                    console.log(savedTask);
                     res.json('Process has just now been created');
-                    service.fetchPageData(savedTask.processId, 1)
-                        .then((fetchedData) => itemsRepository.addItem(fetchedData))
+                    service.fetchPageData(savedTask.id, 1)
+                        .then((fetchedData) => itemsRepository.saveItemToDb(fetchedData))
                         .then((savedData) => tasksRepository.updateTaskStatus(savedTask, true))
-                        .then((updatedTaks) => tasksRepository.getFinishedTask(savedTask.processId))
+                        .then((updatedTask) => tasksRepository.getFinishedTask(savedTask.id))
                         .then((finishedTask) => {
                             itemsRepository.getItemById(finishedTask)
                                 .then((data) => {
@@ -27,18 +26,14 @@ let entireProcess = function (router, io) {
                                         pages: data.numOfPages,
                                         date: finishedTask.date,
 
-                                        id: finishedTask.processId
+                                        id: finishedTask.id
                                     };
                                     io.emit('result', obj);
                                     req.socket.end();
                                 });
-
                         });
                 })
                 .catch((err) => {
-                    console.log(err);
-                    res.json(err);
-
                     io.emit('result', err);
                     req.socket.end();
                 })
@@ -70,7 +65,7 @@ let entireProcess = function (router, io) {
                                 model: data.model,
                                 pages: data.numOfPages,
                                 date: finishedTask.date,
-                                id: finishedTask.processId
+                                id: finishedTask.id
                             };
                             io.emit('result', obj);
                             req.socket.end();

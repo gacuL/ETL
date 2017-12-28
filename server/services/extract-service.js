@@ -44,7 +44,7 @@ function concatOpinions(result) {
 }
 
 function prepareItemData(result, pagesNumber, deviceId) {
-  console.log(result);
+    console.log(result);
     return new Promise((resolve, reject) => {
         resolve({
             type: getType(result.dom),
@@ -82,16 +82,16 @@ function prepareOpinionsData(dom, opinions, deviceId, pageId) {
         let localOpinions = [];
         let productsReviews = dom.window.document.querySelector(".product-reviews").getElementsByClassName("review-box");
         Array.prototype.map.call(productsReviews, (productReview)=>{
-            console.log('//////test/////)');
+
             let reviewContent = productReview.getElementsByClassName("product-review-body")[0].textContent;
             let stars = productReview.getElementsByClassName("review-score-count")[0].textContent;
             let reviewerName = productReview.getElementsByClassName("reviewer-name-line")[0].textContent;
             let reviewDate = productReview.getElementsByTagName("time")[0].getAttribute("datetime");
-            let formattedReviewerName = reviewerName.replace(/[\n\t\s]+/g, "");
-            let formattedReviewContent  = reviewContent.replace(/[\n\t]+/g, "");
+            // let formattedReviewerName = reviewerName.replace(/[\n\t\s]+/g, "");
+            // let formattedReviewContent  = reviewContent.replace(/[\n\t]+/g, "");
 
-            return localOpinions.push({reviewContent: formattedReviewContent, stars: stars,
-                reviewerName: formattedReviewerName, reviewDate: reviewDate});
+            return localOpinions.push({reviewContent: reviewContent, stars: stars,
+                reviewerName: reviewerName, reviewDate: reviewDate});
 
 
         });
