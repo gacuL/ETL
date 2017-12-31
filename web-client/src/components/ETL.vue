@@ -7,7 +7,6 @@
       <router-link class="nav-link" :to="{name:'threeSteps'}" tab="li" active-class="active" exact>
         <a>ETL - 3 kroki</a>
       </router-link>
-      <button class="btn btn-primary float-right">Fetch</button>
     </ul>
 
     <hr>

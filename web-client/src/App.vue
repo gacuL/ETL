@@ -2,8 +2,7 @@
   <div>
     <app-header></app-header>
     <router-view></router-view>
-    <app-footer></app-footer>
-    <!--<app-etl v-bind:ninjas="ninjas"></app-etl>-->
+    <!--<app-footer></app-footer>-->
   </div>
 </template>
 
@@ -27,13 +26,6 @@ export default {
   },
   data () {
     return {
-      ninjas: [
-        {name: "Pitro", speciality: "Killing", show: false},
-        {name: "Pitro", speciality: "Killing", show: false},
-        {name: "Pitro", speciality: "Killing", show: false},
-        {name: "Pitro", speciality: "Killing", show: false},
-        {name: "Pitro", speciality: "Killing", show: false}
-      ]
     }
   }
 }

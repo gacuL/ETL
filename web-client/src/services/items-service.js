@@ -7,5 +7,9 @@ export default {
 
   post(id) {
     return Api().post('/entire-process/' + id)
+  },
+
+  get() {
+    return Api().get('/items');
   }
 }
