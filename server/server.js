@@ -2,6 +2,7 @@ let entireProcess = require('./controllers/entire-ETL-process-controller');
 let extractController = require('./controllers/extract-controller');
 let transformController = require('./controllers/transform-controller');
 let loadController = require('./controllers/load-controller');
+let itemsController = require('./controllers/items-controller');
 
 const express = require('express');
 const path = require('path');
@@ -12,6 +13,8 @@ const mongoose = require('mongoose');
 const config = require('./config/database');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+
+
 
 
 mongoose.Promise = global.Promise;
@@ -37,6 +40,7 @@ entireProcess(router, io);
 extractController(router, io);
 transformController(router, io);
 loadController(router, io);
+itemsController(router);
 
 http.listen(8000, function () {
     console.log('Process ' + process.pid + ' is listening to all incoming requests');

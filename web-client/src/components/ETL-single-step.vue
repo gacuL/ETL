@@ -12,7 +12,7 @@
                 name="product-id"
                 id="productIDInput"
                 v-model="productId"
-                placeholder="Enter product id...">
+                placeholder="Wprowadź ID produktu...">
             </div>
             <button @click="fetchData" class="btn btn-primary">Rozpocznij proces ETL</button>
           </form>
@@ -52,7 +52,8 @@
 </template>
 
 <script>
-import itemsService from "../services/items-service";
+
+import entireProcessService from "../services/entire-process-service";
 import socket from 'socket.io-client';
 
 export default {
@@ -68,7 +69,7 @@ export default {
     fetchData(event) {
       event.preventDefault();
       this.loading = true;
-      itemsService.get(this.productId).then(result => {
+      entireProcessService.get(this.productId).then(result => {
         console.log(result);
         this.result = result.data;
       });
@@ -76,7 +77,7 @@ export default {
     updateData(event) {
       this.loading = true;
       event.preventDefault();
-      itemsService.post(this.productId).then(result => {
+      entireProcessService.post(this.productId).then(result => {
         console.log(result);
         this.result = result.data;
       });

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Home component</h1>
     <div class="container-fluid">
       <div class="row">
         <!--<div v-if="loading" class="loading-spinner">-->

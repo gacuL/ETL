@@ -4,3 +4,4 @@ server/node_modules
 /server/fetched-data
 node_modules/
 build/
+/doc/

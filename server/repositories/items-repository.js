@@ -72,3 +72,17 @@ module.exports.getItemById = (item) => {
             })
     });
 };
+
+module.exports.getAllItems = () => {
+  return new Promise((resolve, reject)=> {
+      Item.find({})
+          .then((result) => {
+              if (result) {
+                  resolve(result);
+              } else {
+                  reject("No items");
+              }
+
+          });
+  });
+};

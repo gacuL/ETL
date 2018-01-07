@@ -72,19 +72,6 @@ module.exports.saveFetchedDataToFile = (data, id) => {
     });
 };
 
-module.exports.saveF = (data, id) => {
-    return new Promise((resolve, reject) => {
-        let json = JSON.stringify(data);
-        fs.writeFile(__dirname + '/../extracted-data/' + id + '.txt', json, 'utf8', (err) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(json)
-            }
-        });
-    });
-};
-
 module.exports.readFetchDataFromFile = (id) => {
     console.log(id);
     return new Promise((resolve, reject) => {
@@ -113,6 +100,7 @@ module.exports.checkIfTaskExist = (id) => {
 };
 
 module.exports.getFinishedTask = (id) => {
+
     return new Promise((resolve, reject) => {
         const query = {id: id};
         Task.findOne(query, (err, data) => {

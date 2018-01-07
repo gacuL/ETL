@@ -1,0 +1,8 @@
+{
+  "name": "ETL API documentation",
+  "version": "1.0.0",
+  "description": "API data warehouse manager",
+  "template": {
+    "forceLanguage": "en"
+  }
+}

@@ -1,39 +1,51 @@
 let tasksRepository = require('../repositories/task-repository');
-let itemsRepository = require('../repositories/items-repository');
+let loadRepository = require('../repositories/load-repository');
 
 let loadController = function (router, io) {
     router
         .route('/load/:id')
         .get((req, res) => {
-            let itemId = req.params.id;
-            // console.log(itemId);
-            // let itemId = 32592506;
+            /**
+             * @api{get} /load
+             * @apiName Load
+             * @apiGroup Load
+             * @apiParam {Number} id
+             * @apiVersion 0.1.0
+             *
+             * @apiSuccess {Object} Product data which is saved to database
+             * @apiSuccessExample Example data on success:
+             * {
+             * model:k500,
+             * pages:10,
+             * date: 25-12-2017,
+             * id: 123
+             */
+            const itemId = req.params.id;
 
-                    res.json('loading process has now been started');
-                    tasksRepository.readFetchDataFromFile(itemId)
-                        .then((fetchedData) => itemsRepository.addItem(fetchedData))
-                        .then((savedData) => tasksRepository.updateTaskStatus(savedTask, true))
-                        .then((updatedTask) => tasksRepository.getFinishedTask(savedTask.id))
-                        .then((finishedTask) => {
-                            itemsRepository.getItemById(finishedTask)
-                                .then((data) => {
+            tasksRepository.readFetchDataFromFile(itemId)
+                .then((fetchedData) => loadRepository.saveItemToDb(fetchedData))
+                .then((savedData) => tasksRepository.getTaskById(itemId))
+                .then((task) => loadRepository.updateTaskStatus(itemId, true))
+                .then((updatedTask) => tasksRepository.getFinishedTask(itemId))
+                .then((finishedTask) => {
+                    loadRepository.removeFile(itemId);
+                    loadRepository.getItemById(itemId)
+                        .then((data) => {
 
-                                    let obj = {
-                                        model: data.model,
-                                        pages: data.numOfPages,
-                                        date: finishedTask.date,
-                                        id: finishedTask.id
-                                    };
-                                    // io.emit('result', obj);
-                                    console.log(obj);
-                                    req.socket.end();
-                                });
-                        })
-                        .catch((err)=>{
-                            console.log('Error wyjebalo', err);
+                            const obj = {
+                                model: data.model,
+                                pages: data.numOfPages,
+                                date: finishedTask.date,
+                                id: data.id
+                            };
+
+                            res.status(200).json(obj);
                         });
                 })
-
+                .catch((err) => {
+                    res.status(500).json(err);
+                });
+        })
 };
 
 module.exports = loadController;
